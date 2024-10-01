@@ -6,15 +6,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.ssh.model.Comment;
+import com.ssh.processors.CommentProcessor;
 import com.ssh.proxies.CommentNotificationProxy;
 import com.ssh.repositories.CommentRepository;
-
+import org.springframework.context.ApplicationContext;
 
 @Service
 public class CommentService {
 
     private final CommentRepository commentRepository;
     private final CommentNotificationProxy commentNotificationProxy;
+
+    @Autowired
+    private ApplicationContext context;
 
     @Autowired
     public CommentService(CommentRepository commentRepository,
@@ -27,5 +31,15 @@ public class CommentService {
     public void publishComment(Comment comment) {
         commentRepository.storeComment(comment);
         commentNotificationProxy.sendComment(comment);
+    }
+
+    public void sendComment(Comment c) {
+        CommentProcessor commentProcessor = context.getBean(CommentProcessor.class);
+        commentProcessor.setComment(c);
+        commentProcessor.processComment(c);
+        commentProcessor.validateComment(c);
+
+        c = commentProcessor.getComment();
+        System.out.println(">>> CommentService.sendComment().getComment: " + c.getText() + " <<<");
     }
 }

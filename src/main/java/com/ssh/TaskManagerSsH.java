@@ -18,6 +18,12 @@ public class TaskManagerSsH {
 
         var commentService = context.getBean(CommentService.class);
         commentService.publishComment(comment);
+        commentService.sendComment(comment);
+
+        var comment2 = new Comment();
+        comment2.setAuthor("Author Comment 2");
+        comment2.setText("Text comment 2.");
+        commentService.sendComment(comment2);
 
     }
 }
