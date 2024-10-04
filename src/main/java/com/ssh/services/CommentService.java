@@ -9,6 +9,7 @@ import com.ssh.model.Comment;
 import com.ssh.processors.CommentProcessor;
 import com.ssh.proxies.CommentNotificationProxy;
 import com.ssh.repositories.CommentRepository;
+import java.util.logging.Logger;
 import org.springframework.context.ApplicationContext;
 
 @Service
@@ -16,6 +17,8 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final CommentNotificationProxy commentNotificationProxy;
+
+    private Logger logger = Logger.getLogger(CommentService.class.getName());
 
     @Autowired
     private ApplicationContext context;
@@ -29,6 +32,7 @@ public class CommentService {
     }
 
     public void publishComment(Comment comment) {
+        logger.info("Publish comment: " + comment.getText());
         commentRepository.storeComment(comment);
         commentNotificationProxy.sendComment(comment);
     }
