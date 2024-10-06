@@ -1,5 +1,7 @@
 package com.ssh;
 
+import java.util.logging.Logger;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.ssh.config.ProjectConfiguration;
@@ -7,6 +9,8 @@ import com.ssh.model.Comment;
 import com.ssh.services.CommentService;
 
 public class TaskManagerSsH {
+
+    private static Logger logger = Logger.getLogger(TaskManagerSsH.class.getName());
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
@@ -17,12 +21,9 @@ public class TaskManagerSsH {
         comment.setText("Demo comment");
 
         var commentService = context.getBean(CommentService.class);
-        commentService.publishComment(comment);
+        String value = commentService.publishComment(comment);
         //commentService.sendComment(comment);
 
-        /*var comment2 = new Comment();
-        comment2.setAuthor("Author Comment 2");
-        comment2.setText("Text comment 2.");
-        commentService.sendComment(comment2);*/
+        logger.info(value);
     }
 }

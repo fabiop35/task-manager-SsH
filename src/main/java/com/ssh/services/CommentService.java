@@ -31,10 +31,11 @@ public class CommentService {
 
     }
 
-    public void publishComment(Comment comment) {
+    public String publishComment(Comment comment) {
         logger.info("Publish comment: " + comment.getText());
         commentRepository.storeComment(comment);
         commentNotificationProxy.sendComment(comment);
+        return "SUCCESS";
     }
 
     public void sendComment(Comment c) {
