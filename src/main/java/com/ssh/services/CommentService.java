@@ -1,16 +1,19 @@
 package com.ssh.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.ssh.aspects.ToLog;
 import com.ssh.model.Comment;
 import com.ssh.processors.CommentProcessor;
 import com.ssh.proxies.CommentNotificationProxy;
 import com.ssh.repositories.CommentRepository;
+import java.util.logging.Level;
+
 import java.util.logging.Logger;
-import org.springframework.context.ApplicationContext;
+
 
 @Service
 public class CommentService {
@@ -46,5 +49,10 @@ public class CommentService {
 
         c = commentProcessor.getComment();
         System.out.println(">>> CommentService.sendComment().getComment: " + c.getText() + " <<<");
+    }
+
+    @ToLog
+    public void deleteComment(Comment comment) {
+        logger.log(Level.INFO, "Deleting comment: {0}", comment.getText());
     }
 }

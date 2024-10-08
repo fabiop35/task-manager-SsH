@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import com.ssh.model.Comment;
+import java.util.logging.Level;
 
 @Component
 @Aspect
@@ -16,7 +17,8 @@ public class LoggingAspect {
 
     private Logger logger = Logger.getLogger(LoggingAspect.class.getName());
 
-    @Around("execution(* com.ssh.services.*.*(..))")
+    //@Around("execution(* com.ssh.services.*.*(..))")
+    @Around("@annotation(ToLog)")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodName = joinPoint.getSignature().getName();
         Object[] arguments = joinPoint.getArgs();
@@ -27,7 +29,7 @@ public class LoggingAspect {
         Object[] newArguments = {comment};
 
         Object returnedByMethod = joinPoint.proceed(newArguments);
-        logger.info("Method executed and returned: " + returnedByMethod);
+        logger.log(Level.INFO, "Method executed and returned: {0}", returnedByMethod);
         //return returnedByMethod;
         return "FAILED";
     }

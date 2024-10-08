@@ -23,6 +23,7 @@ public class TaskManagerSsH {
         var commentService = context.getBean(CommentService.class);
         String value = commentService.publishComment(comment);
         //commentService.sendComment(comment);
+        commentService.deleteComment(comment);
 
         logger.info(value);
     }
