@@ -2,12 +2,15 @@ package com.ssh;
 
 import java.util.logging.Logger;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.ssh.config.ProjectConfiguration;
 import com.ssh.model.Comment;
 import com.ssh.services.CommentService;
 
+@SpringBootApplication
 public class TaskManagerSsH {
 
     private static Logger logger = Logger.getLogger(TaskManagerSsH.class.getName());
@@ -26,5 +29,6 @@ public class TaskManagerSsH {
         commentService.deleteComment(comment);
 
         logger.info(value);
+        SpringApplication.run(TaskManagerSsH.class, args);
     }
 }
