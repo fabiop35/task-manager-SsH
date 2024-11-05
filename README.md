@@ -7,4 +7,12 @@ curl -X POST http://localhost:8080/payment
 #CH10: Test @RequestBody annotation
 curl -X POST http://localhost:8080/makePayment -H "content-type: application/json" -d '{"amount": 9.9}' -v
 
+##CH11
+curl -X POST http://localhost:8080/payment -H "content-type: application/json" -H "requestId: 1" -d '{"amount": 9.9}' -v
+
+#OpenFeign request
+curl -X POST -H 'content-type:application/json' -d '{"amount":1000}' http://localhost:8080/paymentOF
+{"id":"30ac829c-21aa-4ba5-a4e3-de5d4ab19afe","amount":1000.0}
+
+
 
