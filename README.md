@@ -18,4 +18,11 @@ curl -X POST -H 'content-type:application/json' -d '{"amount":1000}' http://loca
 #Test JdbcTemplate with H2
 curl -XPOST 'http://localhost:8080/purchase' -H 'Content-Type: application/json' -d '{"product" : "Spring Security in Action",  "price" : 25.2}'
 
+#Install MariaDB
+pkg install mariadb
+
+#start MariaDB
+cd '/data/data/com.termux/files/usr' ; /data/data/com.termux/files/usr/bin/mariadbd-safe --datadir='/data/data/com.termux/files/usr/var/lib/mysql'
+
+
 

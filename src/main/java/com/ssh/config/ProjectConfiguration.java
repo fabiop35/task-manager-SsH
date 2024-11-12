@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @PropertySource("classpath:application.properties")
@@ -22,18 +23,17 @@ public class ProjectConfiguration {
     @Autowired
     Environment environment;
 
-    private final String URL = "spring.datasource.url";
-    private final String USER = "spring.datasource.username";
-    private final String DRIVER = "spring.datasource.driverClassName";
-    private final String PASSWORD = "spring.datasource.password";
+    private final String URL = "custom.spring.datasource.url";
+    private final String USER = "custom.spring.datasource.username";
+    private final String PASSWORD = "custom.spring.datasource.password";
 
     @Bean
     DataSource dataSource() {
-        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-        driverManagerDataSource.setUrl(environment.getProperty(URL));
+        HikariDataSource driverManagerDataSource = new HikariDataSource();
+        driverManagerDataSource.setJdbcUrl(environment.getProperty(URL));
         driverManagerDataSource.setUsername(environment.getProperty(USER));
         driverManagerDataSource.setPassword(environment.getProperty(PASSWORD));
-        driverManagerDataSource.setDriverClassName(environment.getProperty(DRIVER));
+
         return driverManagerDataSource;
     }
 }
