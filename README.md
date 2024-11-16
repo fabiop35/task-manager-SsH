@@ -24,5 +24,9 @@ pkg install mariadb
 #start MariaDB
 cd '/data/data/com.termux/files/usr' ; /data/data/com.termux/files/usr/bin/mariadbd-safe --datadir='/data/data/com.termux/files/usr/var/lib/mysql'
 
+#Test Transaction
+curl http://localhost:8080/accounts
+
+curl -XPOST -H "Content-Type: application/json" -d '{"senderAccountId":2, "receiverAccountId":1, "amount":900}' http://localhost:8080/transfer
 
 
