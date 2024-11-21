@@ -2,8 +2,13 @@ package com.ssh.model;
 
 import java.math.BigDecimal;
 
-public class Account {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
+@Table
+public class Account {
+    
+    @Id
     private long id;
     private String name;
     private BigDecimal amount;

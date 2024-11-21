@@ -7,13 +7,14 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssh.exceptions.AccountNotFoundException;
 import com.ssh.model.Account;
 import com.ssh.repositories.AccountRepository;
 
 @Service
 public class TransferService {
-    
-    Logger logger = Logger.getLogger(TransferService.class.getName());
+
+    static final Logger logger = Logger.getLogger(TransferService.class.getName());
     private final AccountRepository accountRepository;
 
     public TransferService(AccountRepository accountRepository) {
@@ -25,9 +26,11 @@ public class TransferService {
 
         logger.info(">>> INIT TRANSACTION <<<");
         logger.info(">findAccountById(idSender)<");
-        Account sender = accountRepository.findAccountById(idSender);
-       logger.info(">findAccountById(idReceive)r<");
-        Account receiver = accountRepository.findAccountById(idReceiver);
+        Account sender = accountRepository.findById(idSender)
+                .orElseThrow(() -> new AccountNotFoundException());
+        logger.info(">findAccountById(idReceive)r<");
+        Account receiver = accountRepository.findById(idReceiver)
+                .orElseThrow(() -> new AccountNotFoundException());
         logger.info(">getAmount()-sender<");
         BigDecimal senderNewAmount = sender.getAmount().subtract(amount);
         logger.info(">getAmount()-receiver<");
@@ -37,11 +40,15 @@ public class TransferService {
         logger.info(">changeAmount()-receiver<");
         accountRepository.changeAmount(idReceiver, receiverNewAmount);
         //logger.info(">>> END <<<");
-        //throw new RuntimeException("Oh no! Something went wrong!");  
+        //throw new RuntimeException("Oh no! Something went wrong!");
         logger.info(">>> END <<<");
     }
 
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAllAccounts();
+    public Iterable<Account> getAllAccounts() {
+        return accountRepository.findAll();
+    }
+
+    public List<Account> findAccountsByName(String name) {
+        return accountRepository.findAccountsByName(name);
     }
 }

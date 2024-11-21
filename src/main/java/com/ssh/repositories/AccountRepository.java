@@ -1,57 +1,21 @@
 package com.ssh.repositories;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
+import org.springframework.data.repository.CrudRepository;
 
 import com.ssh.model.Account;
-//import com.ssh.repositories.mappers.AccountRowMapper;
 
-@Repository
-public class AccountRepository {
+public interface AccountRepository extends CrudRepository<Account, Long> {
 
-    private final JdbcTemplate jdbc;
+    @Query("SELECT * FROM account WHERE name = :name")
+    List<Account> findAccountsByName(String name);
 
-    public AccountRepository(DataSource dataSource) {
-        jdbc = new JdbcTemplate(dataSource);
-    }
-
-    public Account findAccountById(long id) {
-        String sql = "SELECT * FROM account WHERE id = ?";
-
-        RowMapper<Account> mapper = (ResultSet rs, int rowNum) -> {
-            Account a = new Account();
-            a.setId(rs.getInt("id"));
-            a.setName(rs.getString("name"));
-            a.setAmount(rs.getBigDecimal("amount"));
-            return a;
-        };
-        //return jdbc.queryForObject(sql, new AccountRowMapper(), id);
-        return jdbc.queryForObject(sql, mapper, id);
-    }
-
-    public void changeAmount(long id, BigDecimal amount) {
-        String sql = "UPDATE account SET amount = ? WHERE id = ?";
-        jdbc.update(sql, amount, id);
-
-    }
-
-    public List<Account> findAllAccounts() {
-        String sql = "SELECT * FROM account";
-        RowMapper<Account> mapper = (ResultSet rs, int rowNum) -> {
-            Account a = new Account();
-            a.setId(rs.getInt("id"));
-            a.setName(rs.getString("name"));
-            a.setAmount(rs.getBigDecimal("amount"));
-            return a;
-        };
-        return jdbc.query(sql, mapper);
-    }
+    @Modifying
+    @Query("UPDATE account SET amount = :amount WHERE id = :id")
+    public void changeAmount(long id, BigDecimal amount);
 
 }

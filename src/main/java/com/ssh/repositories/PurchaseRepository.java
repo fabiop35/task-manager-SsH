@@ -1,29 +1,26 @@
 package com.ssh.repositories;
 
+import java.math.BigDecimal;
 import java.util.List;
-import javax.sql.DataSource;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
+import org.springframework.data.repository.CrudRepository;
 
 import com.ssh.model.Purchase;
 
-@Repository
-public class PurchaseRepository {
+public interface PurchaseRepository extends CrudRepository<Purchase, Long> {
 
-    private final JdbcTemplate jdbc;
-
-    public PurchaseRepository(DataSource dataSource) {
+    /*public PurchaseRepository(DataSource dataSource) {
         jdbc = new JdbcTemplate(dataSource);
-    }
+    }*/
+    @Modifying
+    @Query("INSERT INTO purchase(product, price) VALUES (:product , :price)")
+    public void storePurchase(String product, BigDecimal price);
 
-    public void storePurchase(Purchase purchase) {
-        String sql = "INSERT INTO purchase(product, price) VALUES (?, ?)";
-        jdbc.update(sql, purchase.getProduct(), purchase.getPrice());
-    }
-
-    public List<Purchase> findAllPurchases() {
+    @Query("SELECT * FROM purchase")
+    public List<Purchase> findAllPurchases();
+    /*{
 
         String sql = "SELECT * FROM purchase";
         RowMapper<Purchase> purchaseRowMapper = (r, i) -> {
@@ -35,6 +32,6 @@ public class PurchaseRepository {
         };
 
         return jdbc.query(sql, purchaseRowMapper);
-    }
+    }*/
 
 }

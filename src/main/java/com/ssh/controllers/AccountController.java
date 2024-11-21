@@ -1,10 +1,11 @@
 package com.ssh.controllers;
 
-import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssh.dto.TransferRequest;
@@ -15,6 +16,7 @@ import com.ssh.services.TransferService;
 public class AccountController {
 
     private final TransferService transferService;
+    private final Logger log = Logger.getLogger(AccountController.class.getName());
 
     public AccountController(TransferService transferService) {
         this.transferService = transferService;
@@ -29,7 +31,14 @@ public class AccountController {
     }
 
     @GetMapping("/accounts")
-    public List<Account> getAllAccounts() {
-        return transferService.getAllAccounts();
+    public Iterable<Account> getAllAccounts(@RequestParam(required = false) String name) {
+
+        log.info(">getAllAccounts().name: "+name);
+
+        if (name == null) {
+            return transferService.getAllAccounts();
+        } else {
+            return transferService.findAccountsByName(name);
+        }
     }
 }

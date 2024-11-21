@@ -5,7 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+//import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
@@ -16,16 +16,16 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @PropertySource("classpath:application.properties")
 @EnableFeignClients(basePackages = "com.ssh.proxies")
-@ComponentScan(basePackages = {"com.ssh.proxies", "com.ssh.services", "com.ssh.repositories", "com.ssh.processors", "com.ssh.aspects"})
+//@ComponentScan(basePackages = {"com.ssh.services","com.ssh.controllers"})
 @EnableAspectJAutoProxy
 public class ProjectConfiguration {
 
     @Autowired
     Environment environment;
 
-    private final String URL = "custom.spring.datasource.url";
-    private final String USER = "custom.spring.datasource.username";
-    private final String PASSWORD = "custom.spring.datasource.password";
+    private final String URL = "spring.datasource.url";
+    private final String USER = "spring.datasource.username";
+    private final String PASSWORD = "spring.datasource.password";
 
     @Bean
     DataSource dataSource() {

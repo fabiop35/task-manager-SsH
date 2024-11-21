@@ -29,4 +29,9 @@ curl http://localhost:8080/accounts
 
 curl -XPOST -H "Content-Type: application/json" -d '{"senderAccountId":2, "receiverAccountId":1, "amount":900}' http://localhost:8080/transfer
 
+#Test Spring Data JDBC
+curl 'http://localhost:8080/accounts?name=Helen+Down'
+
+
+
 
