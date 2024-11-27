@@ -33,9 +33,9 @@ public class TransferService {
                 .orElseThrow(() -> new AccountNotFoundException());
         logger.info(">getAmount()-sender<");
         BigDecimal senderNewAmount = sender.getAmount().subtract(amount);
-        logger.info(">getAmount()-receiver<");
+        logger.info(">-senderNewAmount: "+senderNewAmount+" <");
         BigDecimal receiverNewAmount = receiver.getAmount().add(amount);
-        logger.info(">changeAmount()-sender <");
+        logger.info(">-receiverNewAmount: "+receiverNewAmount+" <");
         accountRepository.changeAmount(idSender, senderNewAmount);
         logger.info(">changeAmount()-receiver<");
         accountRepository.changeAmount(idReceiver, receiverNewAmount);

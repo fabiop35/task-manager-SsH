@@ -32,6 +32,7 @@ curl -XPOST -H "Content-Type: application/json" -d '{"senderAccountId":2, "recei
 #Test Spring Data JDBC
 curl 'http://localhost:8080/accounts?name=Helen+Down'
 
-
-
-
+#Run Tests
+mvn test
+mvn -Dtest=com.ssh.TransferServiceUnitTests test
+mvn -Dtest=com.ssh.TransferServiceSpringIntegrationTests test
